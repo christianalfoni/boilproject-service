@@ -1,6 +1,7 @@
 import { jsx } from '@emotion/core'
 import { useOvermind } from '../overmind'
 import { FaGithub } from 'react-icons/fa'
+import Loader from './Loader'
 
 const Topbar: React.FunctionComponent = () => {
   const { state, actions } = useOvermind()
@@ -65,6 +66,7 @@ const Topbar: React.FunctionComponent = () => {
                   position: 'absolute',
                   top: '30px',
                   right: 0,
+                  boxSizing: 'border-box',
                   width: '150px',
                   zIndex: 2,
                 }}
@@ -106,10 +108,10 @@ const Topbar: React.FunctionComponent = () => {
                 </div>
               </div>
             </div>
-          ) : state.isAuthenticating ? null : (
+          ) : (
             <button
               onClick={actions.login}
-              disabled={state.isLoggingIn}
+              disabled={state.isLoggingIn || state.isAuthenticating}
               css={{
                 outline: 'none',
                 borderRadius: '3px',
@@ -118,15 +120,20 @@ const Topbar: React.FunctionComponent = () => {
                 border: '1px solid var(--color-black-1)',
                 backgroundColor: 'var(--color-white-1)',
                 padding: '0.25rem 0.5rem',
+                boxSizing: 'border-box',
+                height: '30px',
                 fontSize: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 cursor: 'pointer',
                 ':disabled': {
-                  opacity: 0.75,
+                  opacity: 0.5,
                 },
                 ':hover': {
-                  backgroundColor: 'var(--color-white-2)',
+                  backgroundColor:
+                    state.isLoggingIn || state.isAuthenticating
+                      ? 'inherit'
+                      : 'var(--color-white-2)',
                 },
               }}
             >

@@ -1,29 +1,13 @@
 import { jsx, css } from '@emotion/core'
 import { useOvermind } from '../overmind'
 import FileEditor from './FileEditor'
-import { useState, useEffect } from 'react'
-
-const input = css({
-  border: 0,
-  backgroundColor: 'transparent',
-  borderBottom: '1px solid var(--color-white-3)',
-  outline: 'none',
-  fontSize: '14px',
-  padding: '0.5rem 0',
-  '::placeholder': {
-    color: 'var(--color-white-3)',
-  },
-  ':read-only': {
-    opacity: 0.75,
-  },
-})
+import { useState } from 'react'
+import NpmSearch from './NpmSearch'
 
 const PackageJson: React.FunctionComponent = () => {
   const { state, actions } = useOvermind()
   const [showError, setShowError] = useState(false)
   const [codemirror, setCodemirror] = useState(null)
-  const [newDependencyName, setNewDependencyName] = useState('')
-  const [newDevDependencyName, setNewDevDependencyName] = useState('')
   const boilerplate = state.currentBoilerplate
 
   function onChange(value: string) {
@@ -40,23 +24,21 @@ const PackageJson: React.FunctionComponent = () => {
     setCodemirror(cm)
   }
 
-  function addDependency() {
+  function addDependency(dependency: string, version: string) {
     try {
       const value = JSON.parse(codemirror.getValue())
       value.dependencies = value.dependencies || {}
-      value.dependencies[newDependencyName] = 'latest'
+      value.dependencies[dependency] = version
       codemirror.setValue(JSON.stringify(value, null, 2))
-      setNewDependencyName('')
     } catch (e) {}
   }
 
-  function addDevDependency() {
+  function addDevDependency(dependency: string, version: string) {
     try {
       const value = JSON.parse(codemirror.getValue())
       value.devDependencies = value.devDependencies || {}
-      value.devDependencies[newDevDependencyName] = 'latest'
+      value.devDependencies[dependency] = version
       codemirror.setValue(JSON.stringify(value, null, 2))
-      setNewDevDependencyName('')
     } catch (e) {}
   }
 
@@ -70,42 +52,8 @@ const PackageJson: React.FunctionComponent = () => {
           },
         }}
       >
-        {state.isOwner ? (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault()
-              addDependency()
-            }}
-          >
-            <input
-              type="text"
-              css={input}
-              onChange={(event) =>
-                setNewDependencyName(event.currentTarget.value)
-              }
-              value={newDependencyName}
-              placeholder="Add dependency..."
-            />
-          </form>
-        ) : null}
-        {state.isOwner ? (
-          <form
-            onSubmit={(event) => {
-              event.preventDefault()
-              addDevDependency()
-            }}
-          >
-            <input
-              type="text"
-              css={input}
-              onChange={(event) =>
-                setNewDevDependencyName(event.currentTarget.value)
-              }
-              value={newDevDependencyName}
-              placeholder="Add dev dependency..."
-            />
-          </form>
-        ) : null}
+        <NpmSearch onSubmit={addDependency} />
+        <NpmSearch onSubmit={addDevDependency} />
       </div>
       <div
         css={{

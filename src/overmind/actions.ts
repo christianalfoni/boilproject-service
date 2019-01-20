@@ -137,12 +137,6 @@ export const addFile: Action = async ({ state, effects }) => {
   state.currentFileIndex = newLength - 1
 }
 
-export const changeNewPackageName: Action<
-  React.ChangeEvent<HTMLInputElement>
-> = ({ value: event, state }) => {
-  state.newPackageName = event.currentTarget.value
-}
-
 export const changeFile: Action<number> = ({ value: index, state }) => {
   state.currentFileIndex = index
 }

@@ -42,7 +42,6 @@ export type State = {
   newConfigurationName: string
   isAddingFile: boolean
   newFileName: string
-  newPackageName: string
   isUpdatingPackages: boolean
   currentFileIndex: number
   currentFile: File
@@ -74,7 +73,6 @@ export const state: State = {
   },
   isAddingFile: false,
   newFileName: '',
-  newPackageName: '',
   isUpdatingPackages: false,
   currentFileIndex: 0,
   get isOwner(this: State) {
