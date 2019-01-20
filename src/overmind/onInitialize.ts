@@ -1,12 +1,12 @@
 import { OnInitialize } from 'overmind'
 
-export const onInitialize: OnInitialize = ({
-  value: overmind,
-  api,
-  router,
-}) => {
-  api.onAuthChange(overmind.actions.onAuthChange)
-  router.route('/', overmind.actions.showFrontPage)
-  router.route<{ username: string }>('/:username', overmind.actions.showProfile)
-  router.start()
+export const onInitialize: OnInitialize = ({ actions, effects }) => {
+  effects.api.onAuthChange(actions.onAuthChange)
+  effects.router.route('/', actions.showFrontPage)
+  effects.router.route<{ username: string }>('/:username', actions.showProfile)
+  effects.router.route<{ username: string; boilerplate: string }>(
+    '/:username/:boilerplate',
+    actions.showProfile
+  )
+  effects.router.start()
 }

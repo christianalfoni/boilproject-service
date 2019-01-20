@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html",
+    "start": "concurrently \"parcel index.html\" \"overmind-devtools\"",
     "build": "parcel build index.html --out-dir public",
     "deploy": "npm run build && firebase deploy"
   },
@@ -29,8 +29,9 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-typescript": "^0.14.0",
     "firebase": "^5.7.3",
-    "overmind": "^12.0.0",
-    "overmind-react": "^13.0.0",
+    "overmind": "^13.0.0-1547932969802",
+    "overmind-devtools": "^14.0.0-1547932969802",
+    "overmind-react": "^14.0.0-1547932969802",
     "page": "^1.11.3",
     "parcel-bundler": "^1.11.0",
     "prettier": "^1.15.3",
@@ -39,5 +40,8 @@
     "react-icons": "^3.3.0",
     "typescript": "^3.2.2",
     "typescript-eslint-parser": "^21.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }

@@ -14,6 +14,9 @@ export const router = {
   goTo(url: string) {
     page.show(url)
   },
+  redirect(url: string) {
+    page.redirect(url)
+  },
 }
 
 export const api = (() => {

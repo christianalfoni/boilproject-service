@@ -1,4 +1,4 @@
-import { Overmind, TConfig } from 'overmind'
+import { Overmind, IConfig } from 'overmind'
 import { createHook } from 'overmind-react'
 import { onInitialize } from './onInitialize'
 import { state } from './state'
@@ -13,7 +13,7 @@ const config = {
 }
 
 declare module 'overmind' {
-  interface IConfig extends TConfig<typeof config> {}
+  interface Config extends IConfig<typeof config> {}
 }
 
 const overmind = new Overmind(config)

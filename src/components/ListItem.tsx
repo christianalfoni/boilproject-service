@@ -1,6 +1,7 @@
 import { jsx } from '@emotion/core'
 import { Boilerplate } from '../overmind/state'
 import { useOvermind } from '../overmind'
+import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 
 type Props = {
   name: string
@@ -20,15 +21,43 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
         padding: '0.5rem',
       }}
       key={name}
-      onClick={() => actions.changeBoilerplate(name)}
     >
-      <span
+      <div
         css={{
-          fontWeight: name === state.currentBoilerplateName ? 'bold' : 'normal',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        {name}
-      </span>
+        {name === state.currentBoilerplateName ? (
+          <FaChevronDown
+            css={{
+              color: 'var(--color-white-3)',
+              marginRight: '0.5rem',
+              fontSize: '12px',
+            }}
+          />
+        ) : (
+          <FaChevronRight
+            css={{
+              color: 'var(--color-white-3)',
+              marginRight: '0.5rem',
+              fontSize: '12px',
+            }}
+          />
+        )}
+        <a
+          href={`/${state.currentProfile.username}/${name}`}
+          css={{
+            fontWeight:
+              name === state.currentBoilerplateName ? 'bold' : 'normal',
+            textDecoration: 'none',
+            color: 'var(--color-black-1)',
+          }}
+        >
+          {name}
+        </a>
+      </div>
+
       {name === state.currentBoilerplateName ? (
         <div
           css={{

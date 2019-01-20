@@ -20,22 +20,92 @@ const Topbar: React.FunctionComponent = () => {
           margin: '0 auto',
         }}
       >
+        <a
+          css={{
+            textDecoration: 'none',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            color: 'var(--color-black-1)',
+            ':hover': {
+              color: 'var(--color-black-3)',
+            },
+          }}
+          href="/"
+        >
+          boilproject.io
+        </a>
         <div
           css={{
             marginLeft: 'auto',
           }}
         >
           {state.user ? (
-            <img
+            <div
               css={{
-                borderRadius: '50%',
-                border: '1px solid var(--color-black-2)',
+                position: 'relative',
+                '> div': {
+                  display: 'none',
+                },
+                ':hover div': {
+                  display: 'block',
+                },
               }}
-              onClick={actions.logout}
-              src={state.user.photoURL}
-              width="30"
-              height="30"
-            />
+            >
+              <img
+                css={{
+                  borderRadius: '50%',
+                  border: '1px solid var(--color-black-2)',
+                }}
+                src={state.user.photoURL}
+                width="30"
+                height="30"
+              />
+              <div
+                css={{
+                  position: 'absolute',
+                  top: '30px',
+                  right: 0,
+                  width: '150px',
+                  zIndex: 2,
+                }}
+              >
+                <div
+                  css={{
+                    margin: '0.5rem 0',
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#FFF',
+                    border: '1px solid var(--color-white-2)',
+                    borderRadius: '3px',
+                  }}
+                >
+                  <a
+                    css={{
+                      textDecoration: 'none',
+                      color: 'var(--color-black-1)',
+                      ':hover': {
+                        color: 'var(--color-black-3)',
+                      },
+                    }}
+                    href={`/${state.user.username}`}
+                  >
+                    my boilerplates
+                  </a>
+                  <div
+                    css={{
+                      textDecoration: 'none',
+                      color: 'var(--color-black-1)',
+                      ':hover': {
+                        color: 'var(--color-black-3)',
+                      },
+                      cursor: 'pointer',
+                    }}
+                    onClick={actions.logout}
+                  >
+                    log out
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : state.isAuthenticating ? null : (
             <button
               onClick={actions.login}
