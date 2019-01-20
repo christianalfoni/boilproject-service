@@ -104,6 +104,7 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             top: 0,
             border: 0,
             backgroundColor: 'transparent',
+            fontFamily: 'inherit',
             borderBottom: `1px solid ${
               state.error ? 'var(--color-red)' : 'var(--color-white-3)'
             }`,
