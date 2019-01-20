@@ -28,9 +28,13 @@ function getVersion(value: string, hit) {
 function getIsValid(value: string, hit, version: string) {
   return Boolean(
     hit &&
-      hit.name === getName(value) &&
+      hit.name.startsWith(getName(value)) &&
       (version in hit.tags || version in hit.versions)
   )
+}
+
+function getHit(value: string, hits) {
+  return value && hits.find((hit) => hit.name.startsWith(value))
 }
 
 type Props = {
@@ -43,7 +47,7 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
       value: '',
       error: false,
     })
-    const hit = currentRefinement && hits[0]
+    const hit = getHit(currentRefinement, hits)
     const version = getVersion(state.value, hit)
     const isValid = getIsValid(state.value, hit, version)
 
@@ -59,7 +63,7 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             return
           }
 
-          onSubmit(currentRefinement, version)
+          onSubmit(hit.name, version)
           setState({
             value: '',
             error: false,
@@ -79,10 +83,15 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             left: 0,
             padding: '0.5rem 0',
             fontSize: '14px',
+            color: 'var(--color-white-3)',
             width: '100%',
           }}
         >
-          {isExplicitVersion(state.value) ? state.value : currentRefinement}
+          {isExplicitVersion(state.value)
+            ? state.value
+            : hit
+            ? hit.name
+            : currentRefinement}
           <span
             css={{
               color: 'var(--color-white-3)',
@@ -110,8 +119,8 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             }`,
             outline: 'none',
             fontSize: '14px',
-            color: 'transparent',
-            caretColor: 'var(--color-black-1)',
+            // color: 'transparent',
+            // caretColor: 'var(--color-black-1)',
             padding: '0.5rem 0',
             '::placeholder': {
               color: 'var(--color-white-3)',
@@ -144,7 +153,7 @@ const NpmSearch: React.FunctionComponent<Props> = ({ onSubmit }) => {
       apiKey="0ec32c7bf787298ec009acc797cf44fc"
       indexName="npm-search"
     >
-      <Configure hitsPerPage="1" />
+      <Configure hitsPerPage="3" />
       <Search onSubmit={onSubmit} />
     </InstantSearch>
   )
