@@ -39,10 +39,11 @@ function getHit(value: string, hits) {
 
 type Props = {
   onSubmit: (dependency: string, version: string) => void
+  placeholder: string
 }
 
 const Search: React.FunctionComponent<Props> = connectSearchBox(
-  connectHits(({ currentRefinement, refine, hits, onSubmit }) => {
+  connectHits(({ currentRefinement, refine, hits, onSubmit, placeholder }) => {
     const [state, setState] = useState({
       value: '',
       error: false,
@@ -73,16 +74,16 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
         css={{
           position: 'relative',
           height: '40px',
-          width: '200px',
+          width: '100%',
         }}
       >
         <div
           css={{
             position: 'absolute',
-            top: 0,
+            top: '-2px',
             left: 0,
             padding: '0.5rem 0',
-            fontSize: '14px',
+            fontSize: '16px',
             color: 'var(--color-white-3)',
             width: '100%',
           }}
@@ -112,13 +113,14 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             left: 0,
             top: 0,
             border: 0,
+            width: '100%',
             backgroundColor: 'transparent',
             fontFamily: 'inherit',
             borderBottom: `1px solid ${
               state.error ? 'var(--color-red)' : 'var(--color-white-3)'
             }`,
             outline: 'none',
-            fontSize: '14px',
+            fontSize: '16px',
             // color: 'transparent',
             // caretColor: 'var(--color-black-1)',
             padding: '0.5rem 0',
@@ -139,14 +141,17 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
             })
           }}
           value={state.value}
-          placeholder="Add dependency..."
+          placeholder={placeholder + '...'}
         />
       </form>
     )
   })
 )
 
-const NpmSearch: React.FunctionComponent<Props> = ({ onSubmit }) => {
+const NpmSearch: React.FunctionComponent<Props> = ({
+  onSubmit,
+  placeholder,
+}) => {
   return (
     <InstantSearch
       appId="OFCNCOG2CU"
@@ -154,7 +159,7 @@ const NpmSearch: React.FunctionComponent<Props> = ({ onSubmit }) => {
       indexName="npm-search"
     >
       <Configure hitsPerPage="3" />
-      <Search onSubmit={onSubmit} />
+      <Search onSubmit={onSubmit} placeholder={placeholder} />
     </InstantSearch>
   )
 }

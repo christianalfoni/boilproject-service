@@ -47,13 +47,19 @@ const PackageJson: React.FunctionComponent = () => {
       <div
         css={{
           display: 'flex',
-          '> form': {
-            marginRight: '1rem',
+          '> div': {
+            flex: 1,
+          },
+          '> div:first-of-type': {
+            marginRight: '20px',
           },
         }}
       >
-        <NpmSearch onSubmit={addDependency} />
-        <NpmSearch onSubmit={addDevDependency} />
+        <NpmSearch onSubmit={addDependency} placeholder="add dependency" />
+        <NpmSearch
+          onSubmit={addDevDependency}
+          placeholder="add dev dependency"
+        />
       </div>
       <div
         css={{

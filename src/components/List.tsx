@@ -28,11 +28,14 @@ const List: React.FunctionComponent = () => {
               '::placeholder': {
                 color: 'var(--color-white-3)',
               },
+              ':disabled': {
+                opacity: 0.5,
+              },
             }}
-            readOnly={state.isAddingConfiguration}
+            disabled={state.isAddingConfiguration}
             onChange={actions.changeNewConfigurationName}
             value={state.newConfigurationName}
-            placeholder="add new boilerplate..."
+            placeholder="create new boilerplate..."
           />
         </form>
       ) : null}

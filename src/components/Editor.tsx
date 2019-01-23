@@ -11,6 +11,23 @@ const Editor: React.FunctionComponent = () => {
   const { state, actions } = useOvermind()
   const [showError, setShowError] = useState(false)
 
+  if (
+    !state.currentProfile.boilerplates ||
+    !Object.keys(state.currentProfile.boilerplates).length
+  ) {
+    return (
+      <div
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <h2>No boilerplates created</h2>
+      </div>
+    )
+  }
+
   if (!state.currentBoilerplate) {
     return <div>Loading...</div>
   }
