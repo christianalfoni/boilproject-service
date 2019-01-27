@@ -80,7 +80,7 @@ const Search: React.FunctionComponent<Props> = connectSearchBox(
         <div
           css={{
             position: 'absolute',
-            top: '-2px',
+            top: 0,
             left: 0,
             padding: '0.5rem 0',
             fontSize: '16px',
