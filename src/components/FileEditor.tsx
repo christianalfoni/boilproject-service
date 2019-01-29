@@ -1,7 +1,8 @@
 import { jsx } from '@emotion/core'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import CodeMirror from 'codemirror'
 import * as path from 'path'
+import { useOvermind } from '../overmind'
 
 type Props = {
   initialValue: string
@@ -29,6 +30,7 @@ const FileEditor: React.FunctionComponent<Props> = ({
   fileName,
   onInitialized,
 }) => {
+  const { state } = useOvermind()
   const codeMirrorRef = useRef(null)
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const FileEditor: React.FunctionComponent<Props> = ({
       mode: getMode(fileName),
       value: initialValue || '',
       tabSize: 2,
+      readOnly: !state.user,
     })
     const listener = () => onChange(cm.getValue())
 

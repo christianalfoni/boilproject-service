@@ -2,6 +2,7 @@ import { jsx } from '@emotion/core'
 import { useOvermind } from '../overmind'
 import { FaGithub } from 'react-icons/fa'
 import Loader from './Loader'
+import { useRef } from 'react'
 
 const Topbar: React.FunctionComponent = () => {
   const { state, actions } = useOvermind()
@@ -44,13 +45,16 @@ const Topbar: React.FunctionComponent = () => {
             <div
               css={{
                 position: 'relative',
+                outline: 'none',
+                cursor: 'pointer',
                 '> div': {
                   display: 'none',
                 },
-                ':hover div': {
+                ':focus div, :focus-within div': {
                   display: 'block',
                 },
               }}
+              tabIndex={-1}
             >
               <img
                 css={{
@@ -68,8 +72,9 @@ const Topbar: React.FunctionComponent = () => {
                   right: 0,
                   boxSizing: 'border-box',
                   width: '150px',
-                  zIndex: 2,
+                  zIndex: 999,
                 }}
+                onClick={() => (document.activeElement as any).blur()}
               >
                 <div
                   css={{
