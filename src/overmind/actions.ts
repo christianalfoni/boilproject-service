@@ -113,6 +113,44 @@ export const updateFile: Operator<{ value: string; file: File }> = pipe(
   })
 )
 
+export const removeFile: Action<number> = async ({
+  value: index,
+  state,
+  effects,
+}) => {
+  if (
+    effects.confirm(
+      'Are you sure you want to delete: ' +
+        state.currentBoilerplate.files[index].path +
+        '?'
+    )
+  ) {
+    state.currentBoilerplate.files.splice(index, 1)
+    state.currentFileIndex =
+      state.currentFileIndex >= state.currentBoilerplate.files.length
+        ? state.currentBoilerplate.files.length - 1
+        : state.currentFileIndex
+
+    await effects.api.updateBoilerplate(
+      state.user,
+      state.currentBoilerplateName,
+      state.currentBoilerplate
+    )
+  }
+}
+
+export const removeBoilerplate: Action<string> = async ({
+  value: name,
+  state,
+  effects,
+}) => {
+  if (effects.confirm('Are you sure you want to delete: ' + name + '?')) {
+    delete state.currentProfile.boilerplates[name]
+
+    effects.api.deleteBoilerplate(state.user, name)
+  }
+}
+
 export const changeNewFileName: Action<React.ChangeEvent<HTMLInputElement>> = ({
   value: event,
   state,

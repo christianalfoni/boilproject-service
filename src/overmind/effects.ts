@@ -19,6 +19,10 @@ export const router = {
   },
 }
 
+export const confirm = (text: string) => {
+  return window.confirm(text)
+}
+
 export const api = (() => {
   function createFirebaseInstance(config) {
     const provider = new firebase.auth.GithubAuthProvider()
@@ -199,6 +203,17 @@ export const api = (() => {
           .update({
             files: data.files,
           })
+          .then(() => resolve())
+          .catch((error) => reject(error))
+      })
+    },
+    deleteBoilerplate(user: User, name: string) {
+      return new Promise((resolve, reject) => {
+        db.collection('profiles')
+          .doc(user.uid)
+          .collection('boilerplates')
+          .doc(name)
+          .delete()
           .then(() => resolve())
           .catch((error) => reject(error))
       })

@@ -1,7 +1,7 @@
 import { jsx } from '@emotion/core'
 import { Boilerplate } from '../overmind/state'
 import { useOvermind } from '../overmind'
-import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
+import { FaChevronDown, FaChevronRight, FaTrashAlt } from 'react-icons/fa'
 
 type Props = {
   name: string
@@ -56,6 +56,21 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
         >
           {name}
         </a>
+        <FaTrashAlt
+          onClick={() => {
+            actions.removeBoilerplate(name)
+          }}
+          css={{
+            marginLeft: 'auto',
+            color: 'var(--color-black-3)',
+            opacity: 0.2,
+            fontSize: '12px',
+            cursor: 'pointer',
+            ':hover': {
+              opacity: 0.75,
+            },
+          }}
+        />
       </div>
 
       {name === state.currentBoilerplateName ? (
@@ -74,9 +89,28 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
               css={{
                 fontWeight:
                   index === state.currentFileIndex ? 'bold' : 'normal',
+                display: 'flex',
               }}
             >
               {file.path}
+              {index === 0 ? null : (
+                <FaTrashAlt
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    actions.removeFile(index)
+                  }}
+                  css={{
+                    marginLeft: 'auto',
+                    color: 'var(--color-black-3)',
+                    fontSize: '12px',
+                    opacity: 0.2,
+                    cursor: 'pointer',
+                    ':hover': {
+                      opacity: 0.75,
+                    },
+                  }}
+                />
+              )}
             </div>
           ))}
           {state.isOwner ? (
