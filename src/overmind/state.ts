@@ -43,6 +43,7 @@ export type State = {
   isAddingFile: boolean
   newFileName: string
   isUpdatingPackages: boolean
+  isForkingBoilerplate: boolean
   currentFileIndex: number
   currentFile: File
   isOwner: boolean
@@ -74,6 +75,7 @@ export const state: State = {
   isAddingFile: false,
   newFileName: '',
   isUpdatingPackages: false,
+  isForkingBoilerplate: false,
   currentFileIndex: 0,
   get isOwner(this: State) {
     return (

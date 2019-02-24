@@ -1,4 +1,4 @@
-import { Overmind, IConfig } from 'overmind'
+import { createOvermind, IConfig } from 'overmind'
 import { createHook } from 'overmind-react'
 import { onInitialize } from './onInitialize'
 import { state } from './state'
@@ -16,6 +16,6 @@ declare module 'overmind' {
   interface Config extends IConfig<typeof config> {}
 }
 
-const overmind = new Overmind(config)
+const overmind = createOvermind(config)
 
 export const useOvermind = createHook(overmind)

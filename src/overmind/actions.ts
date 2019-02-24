@@ -8,7 +8,7 @@ export const showFrontPage: Action = ({ state }) => {
 export const showProfile: Action<{
   username: string
   boilerplate?: string
-}> = async ({ value: params, state, effects }) => {
+}> = async ({ state, effects }, params) => {
   const isCurrentProfile =
     state.currentProfile && params.username === state.currentProfile.username
 
@@ -37,7 +37,7 @@ export const showProfile: Action<{
   }
 }
 
-export const onAuthChange: Action<User> = async ({ value: user, state }) => {
+export const onAuthChange: Action<User> = async ({ state }, user) => {
   state.isAuthenticating = false
 
   if ((state.user && user) || !user) {
@@ -69,7 +69,7 @@ export const logout: Action = async ({ effects }) => {
 
 export const changeNewConfigurationName: Action<
   React.ChangeEvent<HTMLInputElement>
-> = ({ value: event, state }) => {
+> = ({ state }, event) => {
   state.newConfigurationName = event.currentTarget.value
 }
 
@@ -86,7 +86,7 @@ export const addBoilerplate: Action = async ({ state, effects }) => {
 
 export const updatePackageJson: Operator<string> = pipe(
   filter(({ state }) => Boolean(state.user)),
-  action(({ value, state }) => {
+  action(({ state }, value) => {
     state.currentBoilerplate.files[0].content = value
   }),
   debounce(200),
@@ -100,7 +100,7 @@ export const updatePackageJson: Operator<string> = pipe(
 )
 
 export const updateFile: Operator<{ value: string; file: File }> = pipe(
-  action(({ value: details }) => {
+  action((_, details) => {
     details.file.content = details.value
   }),
   debounce(200),
@@ -113,11 +113,7 @@ export const updateFile: Operator<{ value: string; file: File }> = pipe(
   })
 )
 
-export const removeFile: Action<number> = async ({
-  value: index,
-  state,
-  effects,
-}) => {
+export const removeFile: Action<number> = async ({ state, effects }, index) => {
   if (
     effects.confirm(
       'Are you sure you want to delete: ' +
@@ -139,22 +135,23 @@ export const removeFile: Action<number> = async ({
   }
 }
 
-export const removeBoilerplate: Action<string> = async ({
-  value: name,
-  state,
-  effects,
-}) => {
+export const removeBoilerplate: Action<string> = async (
+  { state, effects },
+  name
+) => {
   if (effects.confirm('Are you sure you want to delete: ' + name + '?')) {
     delete state.currentProfile.boilerplates[name]
 
     effects.api.deleteBoilerplate(state.user, name)
+
+    effects.router.goTo(`/${state.user.username}`)
   }
 }
 
-export const changeNewFileName: Action<React.ChangeEvent<HTMLInputElement>> = ({
-  value: event,
-  state,
-}) => {
+export const changeNewFileName: Action<React.ChangeEvent<HTMLInputElement>> = (
+  { state },
+  event
+) => {
   state.newFileName = event.currentTarget.value
 }
 
@@ -175,6 +172,18 @@ export const addFile: Action = async ({ state, effects }) => {
   state.currentFileIndex = newLength - 1
 }
 
-export const changeFile: Action<number> = ({ value: index, state }) => {
+export const changeFile: Action<number> = ({ state }, index) => {
   state.currentFileIndex = index
+}
+
+export const forkBoilerplate: Action = async ({ state, effects }) => {
+  state.isForkingBoilerplate = true
+  await effects.api.forkBoilerplate(
+    state.user,
+    state.currentBoilerplateName,
+    state.currentBoilerplate
+  )
+  state.isForkingBoilerplate = false
+
+  effects.router.goTo(`/${state.user.username}/${state.currentBoilerplateName}`)
 }

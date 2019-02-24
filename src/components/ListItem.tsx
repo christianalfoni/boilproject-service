@@ -26,6 +26,9 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
         css={{
           display: 'flex',
           alignItems: 'center',
+          ':hover :last-child': {
+            display: 'block',
+          },
         }}
       >
         {name === state.currentBoilerplateName ? (
@@ -56,21 +59,24 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
         >
           {name}
         </a>
-        <FaTrashAlt
-          onClick={() => {
-            actions.removeBoilerplate(name)
-          }}
-          css={{
-            marginLeft: 'auto',
-            color: 'var(--color-black-3)',
-            opacity: 0.2,
-            fontSize: '12px',
-            cursor: 'pointer',
-            ':hover': {
-              opacity: 0.75,
-            },
-          }}
-        />
+        {state.isOwner ? (
+          <FaTrashAlt
+            onClick={() => {
+              actions.removeBoilerplate(name)
+            }}
+            css={{
+              marginLeft: 'auto',
+              color: 'var(--color-black-3)',
+              opacity: 0.2,
+              fontSize: '12px',
+              cursor: 'pointer',
+              display: 'none',
+              ':hover': {
+                opacity: 0.75,
+              },
+            }}
+          />
+        ) : null}
       </div>
 
       {name === state.currentBoilerplateName ? (
@@ -90,10 +96,13 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
                 fontWeight:
                   index === state.currentFileIndex ? 'bold' : 'normal',
                 display: 'flex',
+                ':hover svg': {
+                  display: 'block',
+                },
               }}
             >
               {file.path}
-              {index === 0 ? null : (
+              {index === 0 || !state.isOwner ? null : (
                 <FaTrashAlt
                   onClick={(event) => {
                     event.stopPropagation()
@@ -104,6 +113,7 @@ const ListItem: React.FunctionComponent<Props> = ({ name, boilerplate }) => {
                     color: 'var(--color-black-3)',
                     fontSize: '12px',
                     opacity: 0.2,
+                    display: 'none',
                     cursor: 'pointer',
                     ':hover': {
                       opacity: 0.75,

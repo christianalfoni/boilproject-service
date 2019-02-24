@@ -218,5 +218,16 @@ export const api = (() => {
           .catch((error) => reject(error))
       })
     },
+    forkBoilerplate(user: User, name: string, boilerplate: Boilerplate) {
+      return new Promise((resolve, reject) => {
+        db.collection('profiles')
+          .doc(user.uid)
+          .collection('boilerplates')
+          .doc(name)
+          .set(boilerplate)
+          .then(() => resolve())
+          .catch((error) => reject(error))
+      })
+    },
   }
 })()
